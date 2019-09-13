@@ -5,6 +5,8 @@ import axios from "axios";
 import { getSmurfs, postSmurfs } from "../actions/";
 
 const SmurfsList = ({ getSmurfs, smurfs, isFetching, error }) => {
+  const [Smurf, setSmurf] = useState({});
+
   useEffect(() => {
     getSmurfs();
   }, [getSmurfs]);
@@ -16,40 +18,89 @@ const SmurfsList = ({ getSmurfs, smurfs, isFetching, error }) => {
   //     props.getSmurfs();
   //   };
 
-  const [newSmurf, setNewSmurf] = useState({});
-
-  const handleChanges = evt => {
-    setNewSmurf({ ...newSmurf, [evt.target.name]: evt.target.value });
-    console.log(newSmurf);
+  const handleChange = e => {
+    setSmurf({
+      ...Smurf,
+      [e.target.name]:
+        e.target.type === "number" ? +e.target.value : e.target.value
+    });
+    console.log(Smurf);
   };
 
-  const handleSubmit = evt => {
-    evt.target.reset();
-    const newSmurfToAdd = {
-      ...newSmurf
+  const handleSubmit = e => {
+    e.target.reset();
+    const newSmurf = {
+      ...Smurf,
+      age: Smurf.age,
+      id: smurfs[smurfs.length - 1].id + 1
     };
-    axios.post("http://localhost:3333/smurfs", newSmurfToAdd);
+    axios.post("http://localhost:3333/smurfs", newSmurf);
   };
 
-  useEffect(() => {
-    getSmurfs();
-  }, [getSmurfs]);
+  const deleteEm = id => {
+    axios.delete(`http://localhost:3333/smurfs/${id}`);
+  };
 
   if (isFetching) {
-    return <h3>Getting some smurfs...</h3>;
+    return <h1>Getting some smurfs...</h1>;
   }
 
   return (
     <div>
-      {smurfs.map(smurf => (
-        <div className="smurf-card">
-          <h3 key={smurf.id}>{smurf.name}</h3>
-          <h4>{smurf.age}</h4>
-          <h4>{smurf.height}</h4>
-        </div>
-      ))}
-      {/* <h1>{smurfs}</h1> */}
-      <button onClick={getSmurfs}>Fetch Smurf!</button>
+      <div className="add-form">
+        <form onSubmit={e => handleSubmit(e)}>
+          <label>
+            Name:
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={Smurf.name}
+              onChange={e => handleChange(e)}
+            />
+          </label>
+          <label>
+            Height:
+            <input
+              type="text"
+              name="height"
+              placeholder="Height"
+              value={Smurf.height}
+              onChange={e => handleChange(e)}
+            />
+          </label>
+          <label>
+            Age:
+            <input
+              type="number"
+              name="age"
+              placeholder="Age"
+              value={Smurf.age}
+              onChange={e => handleChange(e)}
+            />
+          </label>
+          <button>Submit Smurf</button>
+        </form>
+      </div>
+
+      <div className="smurf-wrap">
+        {smurfs.map(smurf => (
+          <div key={smurf.id} className="smurf-card">
+            <h3>Name: {smurf.name}</h3>
+            <p>Age: {smurf.age}</p>
+            <p>Height: {smurf.height}</p>
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={() => {
+          deleteEm(smurfs.id);
+          window.location.reload();
+        }}
+      >
+        Delete Smurf!
+      </button>
     </div>
   );
 };
@@ -64,5 +115,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { getSmurfs }
+  { getSmurfs, postSmurfs }
 )(SmurfsList);
