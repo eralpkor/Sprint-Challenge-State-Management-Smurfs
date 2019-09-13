@@ -8,9 +8,8 @@ export default function SmurfCard(props) {
 
   const handleDelete = (e, id) => {
     e.preventDefault();
-    dispatch(deleteSmurf(props.smurf.id));
     dispatch(getSmurfs());
-
+    dispatch(deleteSmurf(props.smurf.id));
   };
 
   return (

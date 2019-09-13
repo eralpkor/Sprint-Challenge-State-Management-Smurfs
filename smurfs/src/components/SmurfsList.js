@@ -12,13 +12,6 @@ const SmurfsList = ({ getSmurfs, smurfs, isFetching, error }) => {
     getSmurfs();
   }, [getSmurfs]);
 
-  // const SmurfsList = props => {
-  //   // get some Smurfs
-  //   const fetchSmurf = e => {
-  //     e.preventDefault();
-  //     props.getSmurfs();
-  //   };
-
   const handleChange = e => {
     setSmurf({
       ...Smurf,
