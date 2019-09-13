@@ -22,6 +22,7 @@ const SmurfsList = ({ getSmurfs, smurfs, isFetching, error }) => {
   };
 
   const handleSubmit = e => {
+    e.preventDefault();
     e.target.reset();
     const newSmurf = {
       ...Smurf,
