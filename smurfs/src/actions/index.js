@@ -27,3 +27,10 @@ export const postSmurfs = newSmurf => dispatch => {
     dispatch({ type: POST_SMURF, payload: newSmurf })
   );
 };
+
+export const deleteSmurf = id => () => {
+  axios
+    .delete(`http://localhost:3333/smurfs/${id}`)
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+};

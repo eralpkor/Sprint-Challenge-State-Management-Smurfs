@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
+import SmurfCard from "./SmurfCard";
 
 import { getSmurfs, postSmurfs } from "../actions/";
 
@@ -31,14 +32,9 @@ const SmurfsList = ({ getSmurfs, smurfs, isFetching, error }) => {
     e.target.reset();
     const newSmurf = {
       ...Smurf,
-      age: Smurf.age,
-      id: smurfs[smurfs.length - 1].id + 1
+      age: Smurf.age
     };
     axios.post("http://localhost:3333/smurfs", newSmurf);
-  };
-
-  const deleteEm = id => {
-    axios.delete(`http://localhost:3333/smurfs/${id}`);
   };
 
   if (isFetching) {
@@ -48,7 +44,7 @@ const SmurfsList = ({ getSmurfs, smurfs, isFetching, error }) => {
   return (
     <div>
       <div className="add-form">
-        <form onSubmit={e => handleSubmit(e)}>
+        <form onSubmit={handleSubmit}>
           <label>
             Name:
             <input
@@ -85,22 +81,19 @@ const SmurfsList = ({ getSmurfs, smurfs, isFetching, error }) => {
 
       <div className="smurf-wrap">
         {smurfs.map(smurf => (
+          <SmurfCard key={smurf.id} smurf={smurf} />
+        ))}
+        {/* {smurfs.map(smurf => (
           <div key={smurf.id} className="smurf-card">
             <h3>Name: {smurf.name}</h3>
             <p>Age: {smurf.age}</p>
             <p>Height: {smurf.height}</p>
+            <button onClick={deleteEm}>Delete Smurf!</button>
           </div>
-        ))}
+        ))} */}
       </div>
 
-      <button
-        onClick={() => {
-          deleteEm(smurfs.id);
-          window.location.reload();
-        }}
-      >
-        Delete Smurf!
-      </button>
+      <button onClick={getSmurfs}>Get Smurf!</button>
     </div>
   );
 };
