@@ -23,10 +23,29 @@ In this challenge, you are to build the Smurfs village once again, only this tim
 Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 - [ ] What problem does the context API help solve?
+
+* with context API we no longer have to pass props down from component to component. No more "prop drilling"
+
 - [ ] In your own words, describe `actions`, `reducers` and the `store` and their role in Redux. What does each piece do? Why is the store known as a 'single source of truth' in a redux application?
+
+* `actions`: Actions are event listeners waiting for an event to occur, then can issue which type of event (and payload, if applicable) to the reducers. 
+
+* `reducers`:  The reducer is a function that holds a switch stm and can be described as the "setState" of redux. This is where JS logic goes. The reducer is taking the information retrieved from the action and then copying to state, and then updating the store to new state copy.
+
+* `store`: is a javascript object that represents everything that can change in the app. The store contains the application state for the app.
+
+
 - [ ] What is the difference between Application state and Component state? When would be a good time to use one over the other?
+
+* Application state is that can be accessed throughout the entire application and component state is that can only be accessed through that component and child components with the information passed down as props. If there is data needed throughout the entire site, using application state would be a good idea. If managing UI data like a form submission, we want to use component state management for that.
+
 - [ ] Describe `redux-thunk`, what does it allow us to do? How does it change our `action-creators`?
+
+* Redux Thunk is a middleware npm package that provides the ability to handle asynchronous operations inside our Action Creators.
+
 - [ ] What is your favorite state management system you've learned and this sprint? Please explain why!
+
+* It's Context API. Because it's less work and it also helps with routing.
 
 ## Project Set Up
 
